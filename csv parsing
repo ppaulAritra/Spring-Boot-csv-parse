@@ -1,0 +1,78 @@
+1. Add below dependency in pom.xml
+
+		<dependency>
+			<groupId>com.opencsv</groupId>
+			<artifactId>opencsv</artifactId>
+			<version>4.1</version>
+		</dependency>
+
+
+2. Make a DTO like Below. Here column is the header(column) of csv file.
+
+
+public class CSVOrderDTO {
+
+	@CsvBindByName(column = "Sender Name")
+	private String senderName;
+	@CsvBindByName(column = "Pickup Address")
+	private String pickupAddress;
+	@CsvBindByName(column = "Sender Phone")
+	private String senderPhoneNo;
+	@CsvBindByName(column = "Pickup Latitude")
+	private Double pickupLatitude;
+	@CsvBindByName(column = "Pickup Longitude")
+	private Double pickupLongitude;
+
+
+
+	@CsvBindByName(column = "Receiver Name")
+	private String receiverName;
+	@CsvBindByName(column = "Receiver Mobile")
+	private String receiverMobileNo;
+	@CsvBindByName(column = "Receiver Address")
+	private String receiverAddress;	
+	@CsvBindByName(column = "Receiver Latitude")
+	private Double receiverLatitude;
+	@CsvBindByName(column = "Receiver Longitude")
+    private Double receiverLongitude;
+    
+    
+	@CsvBindByName(column = "Category")
+    private String category;
+	@CsvBindByName(column = "Order Type")
+    private String orderType;
+	@CsvBindByName(column = "Order Item")
+    private Integer orderItem;
+	@CsvBindByName(column = "Item Type")
+    private String itemType;
+	@CsvBindByName(column = "Sub Item Type")
+    private String subItemType;
+	@CsvBindByName(column = "Weight")
+    private Double weight;
+	@CsvBindByName(column = "Dimension")
+    private String dimension;
+	@CsvBindByName(column = "Required Vehicle")
+    private String requiredVehicle;
+//getter setter
+
+}
+
+
+
+3. In controller 
+
+
+public ModelAndView createBulkOrder(
+			@RequestParam("uploadfile") MultipartFile file) throws Exception  {
+
+
+		 Reader reader = new InputStreamReader(file.getInputStream());
+  
+
+		List<CSVOrderDTO> bulkOrder = new CsvToBeanBuilder(reader).withType(CSVOrderDTO.class).build().parse();
+		
+		System.out.println("***********");
+		System.out.println(bulkOrder);
+
+		 return null;
+	}
